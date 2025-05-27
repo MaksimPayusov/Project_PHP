@@ -1,1 +1,125 @@
-<?phpsession_start();include('../includes/config.php');if(strlen($_SESSION['tclogin'])==0)    {   		header('location:index.php');	}	else	{		if(isset($_POST['submit']))		{			$regno=$_SESSION['tclogin'];				$currentpass=md5($_POST['cpass']);			$newpass=md5($_POST['newpass']);			$sql=mysqli_query($con,"SELECT password FROM  technic where password='$currentpass' && username='$regno'");			$num=mysqli_fetch_array($sql);			if($num>0)			{				 $con=mysqli_query($con,"update `technic` set `password`='$newpass', updationDate=now() where username='$regno'");				echo '<script>alert("Пароль успешно изменен!")</script>';				echo '<script>window.location.href=change-password.php</script>';			}else {				echo '<script>alert("Текущий пароль не совпадает!")</script>';				echo '<script>window.location.href=change-password.php</script>';			}		}?><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>    <meta charset="utf-8" />    <title>Панель управления | Смена пароля работника</title>    <link href="../assets/css/bootstrap.css" rel="stylesheet" />    <link href="../assets/css/font-awesome.css" rel="stylesheet" />    <link href="../assets/css/style.css" rel="stylesheet" /></head><script type="text/javascript">function valid(){	if(document.chngpwd.cpass.value=="")	{	alert("Поле - текущий введенный пароль пусто!");	document.chngpwd.cpass.focus();	return false;	}	else if(document.chngpwd.newpass.value=="")	{	alert("Поле - новый введенный пароль пусто!");	document.chngpwd.newpass.focus();	return false;	}	else if(document.chngpwd.cnfpass.value=="")	{	alert("Поле - подтвердите введенный пароль пусто!");	document.chngpwd.cnfpass.focus();	return false;	}	else if(document.chngpwd.newpass.value!= document.chngpwd.cnfpass.value)	{	alert("Поле пароль и поле подтверждения пароля не совпадают!");	document.chngpwd.cnfpass.focus();	return false;	}	return true;}</script><body><?php include('includes/header.php');?>    <!-- LOGO HEADER END--><?php if($_SESSION['tclogin']!=""){ include('includes/menubar.php');} ?>    <!-- MENU SECTION END-->    <div class="content-wrapper">        <div class="container">              <div class="row">                    <div class="col-md-12">                        <h1 class="page-head-line">Смена пароля работника </h1>                    </div>                </div>                <div class="row" >                  <div class="col-md-3"></div>                    <div class="col-md-6">                        <div class="panel panel-default">                        <div class="panel-heading">                           Смена пароля                        </div>						<font color="green" align="center"><?php echo htmlentities($_SESSION['msg']);?><?php echo htmlentities($_SESSION['msg']="");?></font>                        <div class="panel-body">						   <form name="chngpwd" method="post" onSubmit="return valid();">							   <div class="form-group">								<label for="exampleInputPassword1">Текущий пароль</label>								<input type="password" class="form-control" id="exampleInputPassword1" name="cpass" placeholder="Текущий пароль" />							  </div>							   <div class="form-group">								<label for="exampleInputPassword1">Новый пароль</label>								<input type="password" class="form-control" id="exampleInputPassword2" name="newpass" placeholder="Новый пароль" />							  </div>							  <div class="form-group">								<label for="exampleInputPassword1">Подтвердите пароль</label>								<input type="password" class="form-control" id="exampleInputPassword3" name="cnfpass" placeholder="Подтвердите пароль" />							  </div>							 							  <button type="submit" name="submit" class="btn btn-default">Сменить пароль</button>								<hr />							</form>                         </div>                       </div>                    </div>                </div>        </div>    </div>    <!-- CONTENT-WRAPPER SECTION END-->  <?php include('includes/footer.php');?>    <!-- FOOTER SECTION END-->    <!-- JAVASCRIPT AT THE BOTTOM TO REDUCE THE LOADING TIME  -->    <!-- CORE JQUERY SCRIPTS -->    <script src="../assets/js/jquery-1.11.1.js"></script>    <!-- BOOTSTRAP SCRIPTS  -->    <script src="../assets/js/bootstrap.js"></script></body></html><?php } ?>
+<?php
+session_start();
+include('../includes/config.php');
+if(strlen($_SESSION['tclogin'])==0)
+    {   
+		header('location:index.php');
+	}
+	else
+	{
+		if(isset($_POST['submit']))
+		{
+			$regno=$_SESSION['tclogin'];	
+			$currentpass=md5($_POST['cpass']);
+			$newpass=md5($_POST['newpass']);
+			$sql=mysqli_query($con,"SELECT password FROM  technic where password='$currentpass' && username='$regno'");
+			$num=mysqli_fetch_array($sql);
+			if($num>0)
+			{
+				 $con=mysqli_query($con,"update `technic` set `password`='$newpass', updationDate=now() where username='$regno'");
+				echo '<script>alert("Пароль успешно изменен!")</script>';
+				echo '<script>window.location.href=change-password.php</script>';
+			}else {
+				echo '<script>alert("Текущий пароль не совпадает!")</script>';
+				echo '<script>window.location.href=change-password.php</script>';
+			}
+		}
+?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Панель управления | Смена пароля работника</title>
+    <link href="../assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="../assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="../assets/css/style.css" rel="stylesheet" />
+</head>
+<script type="text/javascript">
+function valid()
+{
+	if(document.chngpwd.cpass.value=="")
+	{
+	alert("Поле - текущий введенный пароль пусто!");
+	document.chngpwd.cpass.focus();
+	return false;
+	}
+	else if(document.chngpwd.newpass.value=="")
+	{
+	alert("Поле - новый введенный пароль пусто!");
+	document.chngpwd.newpass.focus();
+	return false;
+	}
+	else if(document.chngpwd.cnfpass.value=="")
+	{
+	alert("Поле - подтвердите введенный пароль пусто!");
+	document.chngpwd.cnfpass.focus();
+	return false;
+	}
+	else if(document.chngpwd.newpass.value!= document.chngpwd.cnfpass.value)
+	{
+	alert("Поле пароль и поле подтверждения пароля не совпадают!");
+	document.chngpwd.cnfpass.focus();
+	return false;
+	}
+	return true;
+}
+</script>
+<body>
+<?php include('includes/header.php');?>
+    <!-- LOGO HEADER END-->
+<?php if($_SESSION['tclogin']!="")
+{
+ include('includes/menubar.php');
+}
+ ?>
+    <!-- MENU SECTION END-->
+    <div class="content-wrapper">
+        <div class="container">
+              <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">Смена пароля работника </h1>
+                    </div>
+                </div>
+                <div class="row" >
+                  <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                        <div class="panel-heading">
+                           Смена пароля
+                        </div>
+						<font color="green" align="center"><?php echo htmlentities($_SESSION['msg']);?><?php echo htmlentities($_SESSION['msg']="");?></font>
+                        <div class="panel-body">
+						   <form name="chngpwd" method="post" onSubmit="return valid();">
+							   <div class="form-group">
+								<label for="exampleInputPassword1">Текущий пароль</label>
+								<input type="password" class="form-control" id="exampleInputPassword1" name="cpass" placeholder="Текущий пароль" />
+							  </div>
+							   <div class="form-group">
+								<label for="exampleInputPassword1">Новый пароль</label>
+								<input type="password" class="form-control" id="exampleInputPassword2" name="newpass" placeholder="Новый пароль" />
+							  </div>
+							  <div class="form-group">
+								<label for="exampleInputPassword1">Подтвердите пароль</label>
+								<input type="password" class="form-control" id="exampleInputPassword3" name="cnfpass" placeholder="Подтвердите пароль" />
+							  </div>
+							 
+							  <button type="submit" name="submit" class="btn btn-default">Сменить пароль</button>
+								<hr />
+							</form>
+                         </div>
+                       </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <!-- CONTENT-WRAPPER SECTION END-->
+  <?php include('includes/footer.php');?>
+    <!-- FOOTER SECTION END-->
+    <!-- JAVASCRIPT AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+    <!-- CORE JQUERY SCRIPTS -->
+    <script src="../assets/js/jquery-1.11.1.js"></script>
+    <!-- BOOTSTRAP SCRIPTS  -->
+    <script src="../assets/js/bootstrap.js"></script>
+</body>
+</html>
+<?php } ?>
